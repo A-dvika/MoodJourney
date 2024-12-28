@@ -1,0 +1,97 @@
+app/
+  (app)/
+    dashboard/
+      page.tsx
+    layout.tsx
+    page.tsx
+  (auth)/
+    sign-in/
+      page.tsx
+    sign-up/
+      page.tsx
+  api/
+    accept-messages/
+      route.ts
+    auth/
+      [...nextauth]/
+        options.ts
+        route.ts
+    check-username-unique/
+      route.ts
+    delete-message/
+      [messageid]/
+        route.ts
+    get-messages/
+      route.ts
+    journal/
+      index.ts
+      [id].tsx
+    send-message/
+      route.ts
+    sign-up/
+      route.ts
+    suggest-messages/
+      route.ts
+  favicon.ico
+  globals.css
+  journal/
+    index.tsx
+    [id]/
+      page.tsx
+  layout.tsx
+  moods/
+    page.tsx
+  profile/
+    page.tsx
+  u/
+    [username]/
+      page.tsx
+components/
+  JournalEntryForm.tsx
+  JournalList.tsx
+  JournalTest.tsx
+  MessageCard.tsx
+  MoodCalendar.tsx
+  Navbar.tsx
+  ProfilePictureUpload.tsx
+  ui/
+    alert-dialog.tsx
+    button.tsx
+    card.tsx
+    carousel.tsx
+    form.tsx
+    input.tsx
+    label.tsx
+    separator.tsx
+    switch.tsx
+    textarea.tsx
+    toast.tsx
+    toaster.tsx
+    use-toast.ts
+context/
+  AuthProvider.tsx
+  JournalContext.tsx
+  MoodContext.tsx
+helpers/
+  apiHelpers.tsx
+  calendarHelpers.tsx
+lib/
+  dbConnect.ts
+  utils.ts
+messages.json
+middleware.ts
+model/
+  journal.ts
+  moods.ts
+  User.ts
+schemas/
+  acceptMessageSchema.ts
+  messageSchema.ts
+  signInSchema.ts
+  signUpSchema.ts
+types/
+  ApiResponse.ts
+  journal.d.ts
+  mood.d.ts
+  next-auth.d.ts
+  user.d.ts
