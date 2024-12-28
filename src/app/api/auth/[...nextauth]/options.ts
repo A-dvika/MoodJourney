@@ -14,49 +14,59 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any): Promise<any> {
+        console.log('Starting authorization process...');
         await dbConnect();
         try {
+          console.log('Searching for user with credentials...');
           const user = await UserModel.findOne({
             $or: [
               { email: credentials.identifier },
               { username: credentials.identifier },
             ],
           });
+
           if (!user) {
-            throw new Error('No user found with this email');
+            console.error('User not found');
+            throw new Error('User not found');
           }
-         
+
+          console.log('User found:', user.username);
+
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password
           );
-          if (isPasswordCorrect) {
-            return user;
-          } else {
-            throw new Error('Incorrect password');
+
+          if (!isPasswordCorrect) {
+            console.error('Invalid password');
+            throw new Error('Invalid password');
           }
-        } catch (err: any) {
-          throw new Error(err);
+
+          console.log('Password is correct');
+          return user; // Make sure the user is of the correct type
+        } catch (err) {
+          console.error('Authorization error:', err);
+          throw new Error('Invalid credentials or user not found');
         }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log('JWT callback triggered...');
       if (user) {
-        token._id = user._id?.toString(); // Convert ObjectId to string
-        token.isVerified = user.isVerified;
-        token.isAcceptingMessages = user.isAcceptingMessages;
+        token._id = (user as any)._id?.toString() || ''; // Cast to User type
         token.username = user.username;
+        console.log('JWT token updated with user data:', token);
       }
       return token;
     },
     async session({ session, token }) {
+      console.log('Session callback triggered...');
       if (token) {
         session.user._id = token._id;
-        session.user.isVerified = token.isVerified;
-        session.user.isAcceptingMessages = token.isAcceptingMessages;
         session.user.username = token.username;
+        console.log('Session updated:', session);
       }
       return session;
     },
@@ -64,7 +74,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.JWT_SECRET || 'fallback-secret',
   pages: {
     signIn: '/sign-in',
   },
